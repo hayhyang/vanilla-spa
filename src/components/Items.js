@@ -12,7 +12,7 @@ export default class Items extends Component {
             <li data-id=${id}>
               ${contents}
               <button class="button--toggle">
-              ${active ? "비활성" : "활성"}
+              ${active ? "활성" : "비활성"}
               </button>
               <button class="button--delete">삭제</button>
             </li>
