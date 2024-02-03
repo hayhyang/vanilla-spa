@@ -1,5 +1,4 @@
 import Component from "../core/Component.js";
-import { store } from "../store.js";
 
 export default class Calculator extends Component {
   template() {
