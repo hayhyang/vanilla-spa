@@ -3,36 +3,36 @@ import Input from "./components/Input.js";
 import Items from "./components/Items.js";
 import Filter from "./components/Filter.js";
 import { setA, setB, setIsFilter, setItems, store } from "./store.js";
+import Calculator from "./components/Calculator.js";
 
 export default class App extends Component {
   template() {
-    const { a, b } = store.getState();
     return `
       <div data-component="input"></div>
       <div data-component="items"></div>
       <div data-component="filter"></div>
-
-      <input id="inputA" type="number" value=${a} />
-      <input id="inputB" type="number" value=${b} />
-      <div>a+b = ${a + b}</div>
+      <div data-component="calculator"></div>
     `;
   }
 
-  setEvent() {
-    this.addEvent("change", "#inputA", ({ target }) => {
-      store.dispatch(setA(Number(target.value)));
-    });
-    this.addEvent("change", "#inputB", ({ target }) => {
-      store.dispatch(setB(Number(target.value)));
-    });
-  }
-
   mounted() {
-    const { addItem, deleteItem, toggleItem, filterItem, filteredItems } = this;
+    const {
+      addItem,
+      deleteItem,
+      toggleItem,
+      filterItem,
+      filteredItems,
+      handleChangeInputA,
+      handleChangeInputB,
+    } = this;
+    const { a, b } = store.getState();
 
     const $input = this.$target.querySelector('[data-component="input"]');
     const $items = this.$target.querySelector('[data-component="items"]');
     const $filter = this.$target.querySelector('[data-component="filter"]');
+    const $calculator = this.$target.querySelector(
+      '[data-component="calculator"]'
+    );
 
     new Input($input, {
       addItem: addItem.bind(this),
@@ -44,6 +44,12 @@ export default class App extends Component {
     });
     new Filter($filter, {
       filterItem: filterItem.bind(this),
+    });
+    new Calculator($calculator, {
+      handleChangeInputA: handleChangeInputA.bind(this),
+      handleChangeInputB: handleChangeInputB.bind(this),
+      a,
+      b,
     });
   }
 
@@ -81,5 +87,12 @@ export default class App extends Component {
 
   filterItem(isFilter) {
     store.dispatch(setIsFilter(isFilter));
+  }
+
+  handleChangeInputA(value) {
+    store.dispatch(setA(value));
+  }
+  handleChangeInputB(value) {
+    store.dispatch(setB(value));
   }
 }
