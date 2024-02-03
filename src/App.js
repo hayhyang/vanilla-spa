@@ -54,12 +54,13 @@ export default class App extends Component {
   }
 
   get filteredItems() {
+    // TODO: isFilter가 0일 때 작동되지 않는 현상 파악하기
     const { isFilter, items } = store.getState();
     const newItems = items.filter(
       ({ active }) =>
-        (isFilter === 1 && active) ||
-        (isFilter === 2 && !active) ||
-        isFilter === 0
+        (isFilter === 2 && active) ||
+        (isFilter === 3 && !active) ||
+        isFilter === 1
     );
     return newItems;
   }

@@ -3,7 +3,7 @@ import createStore from "./core/store.js";
 const initState = {
   a: 10,
   b: 20,
-  isFilter: 0,
+  isFilter: 1,
   items: [
     {
       id: 1,
