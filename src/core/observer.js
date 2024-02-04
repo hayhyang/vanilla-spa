@@ -1,7 +1,16 @@
 let currentObserver = null;
 
+const debounceFrame = (callback) => {
+  let currentCallback = -1;
+
+  return () => {
+    cancelAnimationFrame(currentCallback);
+    currentCallback = requestAnimationFrame(callback);
+  };
+};
+
 export const observe = (fn) => {
-  currentObserver = fn;
+  currentObserver = debounceFrame(fn);
   fn();
   currentObserver = null;
 };
@@ -16,10 +25,15 @@ export const observable = (obj) => {
         return _value;
       },
       set(value) {
-        _value = value;
+        if (_value === value) return;
+        if (JSON.stringify(_value) === JSON.stringify(value)) return;
+
+        _value = _value;
         observers.forEach((observer) => observer());
       },
     });
   });
   return obj;
 };
+
+// TODO: Proxy API를 활용한 방법 추가하기
