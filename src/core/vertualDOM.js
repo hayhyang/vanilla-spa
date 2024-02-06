@@ -33,7 +33,19 @@ const node = vertualDOM(
   )
 );
 
-const createElement = (node) => {};
+// virtualDOM을 readDOM으로 변환하는 함수
+const createElement = (node) => {
+  if (typeof node === "text") return document.createTextNode(node);
+
+  const $el = document.createElement(node.type);
+  Object.entries(node.props)
+    .filter(([attr, value]) => value)
+    .forEach(([attr, value]) => $el.setAttribute(attr, value));
+
+  children.forEach((child) => $el.appendChild(child));
+
+  return $el;
+};
 
 createElement(node);
 
@@ -42,7 +54,7 @@ const state = [
   { id: 2, completed: true, content: "todo list item 2" },
 ];
 
-createElement(
+const readlDOM = createElement(
   <div id="app">
     <ul>
       {state.map(({ completed, content }) => (
